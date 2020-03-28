@@ -27,15 +27,14 @@ public class UbsDto {
   private String id;
   private String name;
   private String address;
+  private String neighborhood;
   private String city;
+  private String municipally;
   private String phone;
-  private LatLongDto geocode;
-  private ScoreDto scores;
-
-  private String lat;
-  private String lon;
+  private String latitude;
+  private String longitude;
   private String size;
-  private String adaptationForSeniors;
-  private String medicalEquipment;
+  private String adaptationforseniors;
+  private String medicalequipment;
   private String medicine;
 }

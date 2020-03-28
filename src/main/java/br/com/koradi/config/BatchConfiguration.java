@@ -44,20 +44,22 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     return new FlatFileItemReaderBuilder<UbsDto>()
         .name("personItemReader")
         .resource(new ClassPathResource("ubs.csv"))
+        .linesToSkip(1)
         .delimited()
-        .includedFields(new Integer[] {0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 12})
         .names(
             new String[] {
-              "lat",
-              "lon",
+              "latitude",
+              "longitude",
+              "municipally",
               "id",
               "name",
               "address",
+              "neighborhood",
               "city",
               "phone",
               "size",
-              "adaptationForSeniors",
-              "medicalEquipment",
+              "adaptationforseniors",
+              "medicalequipment",
               "medicine"
             })
         .targetType(UbsDto.class)
@@ -73,16 +75,18 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
               {
                 setNames(
                     new String[] {
-                      "lat",
-                      "lon",
+                      "latitude",
+                      "longitude",
+                      "municipally",
                       "id",
                       "name",
                       "address",
+                      "neighborhood",
                       "city",
                       "phone",
                       "size",
-                      "adaptationForSeniors",
-                      "medicalEquipment",
+                      "adaptationforseniors",
+                      "medicalequipment",
                       "medicine"
                     });
               }
@@ -107,7 +111,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     JdbcBatchItemWriter<UbsDto> writer = new JdbcBatchItemWriter<UbsDto>();
     writer.setItemSqlParameterSourceProvider(
         new BeanPropertyItemSqlParameterSourceProvider<UbsDto>());
-    writer.setSql("INSERT INTO ubs(id, name, address, city, phone) VALUES (:id, :name, :address, :city, :phone)");
+    writer.setSql(
+        "INSERT INTO ubs(id, name, address, city, phone, latitude, longitude, neighborhood, municipally, size, adaptationforseniors, medicalequipment, medicine) "
+            + "VALUES (:id, :name, :address, :city, :phone, :latitude, :longitude, :neighborhood, :municipally, :size, :adaptationforseniors, :medicalequipment, :medicine)");
     writer.setDataSource(dataSource);
     return writer;
   }
@@ -119,7 +125,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
       ItemProcessor<UbsDto, UbsDto> processor) {
     return stepBuilderFactory
         .get("step")
-        .<UbsDto, UbsDto>chunk(3)
+        .<UbsDto, UbsDto>chunk(10)
         .reader(reader())
         .processor(processor)
         .writer(writer)
@@ -129,7 +135,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
   @Bean
   public Job readCSVFileJob(JobCompletionListener listener, Step step1) {
     return jobBuilderFactory
-        .get("importUserJob")
+        .get("importUbsJob")
         .incrementer(new RunIdIncrementer())
         .flow(step1)
         .end()

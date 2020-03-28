@@ -28,8 +28,14 @@ public class Ubs implements Serializable {
   @Id private String id;
   private String name;
   private String address;
+  private String neighborhood;
   private String city;
+  private String municipally;
   private String phone;
-  @OneToOne private LatLong geocode;
-  @OneToOne private Score scores;
+  private String latitude;
+  private String longitude;
+  private String size;
+  private String adaptationforseniors;
+  private String medicalequipment;
+  private String medicine;
 }
