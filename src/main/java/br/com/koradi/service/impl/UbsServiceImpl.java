@@ -72,13 +72,18 @@ public class UbsServiceImpl implements UbsService {
     double lat = Double.parseDouble(latlon[0]);
     double lon = Double.parseDouble(latlon[1]);
     double distance = 10;
-    List<Ubs> ubs = ubsRepository.findClientWithNearestLocation(lat, lon, distance, pageable);
+    List<Ubs> ubs = ubsRepository.findClientWithNearestLocation(lat, lon, distance);
     List<UbsDto> ubsDtos = new ArrayList<>();
     ubs.forEach(
         _ubs -> {
           ubsDtos.add(toCustomerDto(_ubs));
         });
-    Page<UbsDto> pages = new PageImpl<UbsDto>(ubsDtos, pageable, ubs.size());
+    int fromIndex = pageable.getPageNumber() * pageable.getPageSize();
+    int toIndex = fromIndex + pageable.getPageSize();
+    if (toIndex > ubs.size()) {
+      toIndex = ubs.size();
+    }
+    Page<UbsDto> pages = new PageImpl<UbsDto>(ubsDtos.subList(fromIndex, toIndex), pageable, ubs.size());
     return pages;
   }
 

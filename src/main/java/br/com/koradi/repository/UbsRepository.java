@@ -29,6 +29,5 @@ public interface UbsRepository extends PagingAndSortingRepository<Ubs, String> {
   public List<Ubs> findClientWithNearestLocation(
       @Param("latitude") double latitude,
       @Param("longitude") double longitude,
-      @Param("distance") double distance,
-      Pageable pageable);
+      @Param("distance") double distance);
 }
