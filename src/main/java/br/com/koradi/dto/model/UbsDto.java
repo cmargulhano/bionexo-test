@@ -2,7 +2,7 @@ package br.com.koradi.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @ToString
 @JsonInclude(value = NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonSerialize(using = UbsSerializer.class)
 public class UbsDto {
   private String id;
   private String name;

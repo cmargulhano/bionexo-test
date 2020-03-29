@@ -18,15 +18,15 @@ public interface UbsRepository extends PagingAndSortingRepository<Ubs, String> {
   Ubs findByName(String name);
 
   static String HAVERSINE_PART =
-      "(6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(c.latitude)) * COS(RADIANS(c.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(c.latitude))))";
+      "(6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(u.latitude)) * COS(RADIANS(u.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(u.latitude))))";
 
   @Query(
-      "SELECT c FROM Ubs c WHERE "
+      "SELECT u FROM Ubs u WHERE "
           + HAVERSINE_PART
           + " < :distance ORDER BY "
           + HAVERSINE_PART
-          + " DESC")
-  public List<Ubs> findClientWithNearestLocation(
+          + " ASC")
+  public List<Ubs> findUbsWithNearestLocation(
       @Param("latitude") double latitude,
       @Param("longitude") double longitude,
       @Param("distance") double distance);

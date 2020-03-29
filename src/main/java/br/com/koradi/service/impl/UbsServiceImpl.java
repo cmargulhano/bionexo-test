@@ -20,6 +20,7 @@ import static br.com.koradi.exception.EnterpriseException.throwException;
 import static br.com.koradi.exception.EntityType.UBS;
 import static br.com.koradi.exception.ExceptionType.DUPLICATE_ENTITY;
 import static br.com.koradi.exception.ExceptionType.ENTITY_NOT_FOUND;
+import static java.lang.Double.parseDouble;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -68,11 +69,14 @@ public class UbsServiceImpl implements UbsService {
 
   @Override
   public Page<UbsDto> findAll(Pageable pageable, String query) {
-    String[] latlon = query.split(",");
-    double lat = Double.parseDouble(latlon[0]);
-    double lon = Double.parseDouble(latlon[1]);
+    String[] queryParams = query.split(",");
+    double lat = parseDouble(queryParams[0]);
+    double lon = parseDouble(queryParams[1]);
     double distance = 10;
-    List<Ubs> ubs = ubsRepository.findClientWithNearestLocation(lat, lon, distance);
+    if (queryParams.length == 3) {
+      distance = parseDouble(queryParams[2]);
+    }
+    List<Ubs> ubs = ubsRepository.findUbsWithNearestLocation(lat, lon, distance);
     List<UbsDto> ubsDtos = new ArrayList<>();
     ubs.forEach(
         _ubs -> {
@@ -83,7 +87,8 @@ public class UbsServiceImpl implements UbsService {
     if (toIndex > ubs.size()) {
       toIndex = ubs.size();
     }
-    Page<UbsDto> pages = new PageImpl<UbsDto>(ubsDtos.subList(fromIndex, toIndex), pageable, ubs.size());
+    Page<UbsDto> pages =
+        new PageImpl<UbsDto>(ubsDtos.subList(fromIndex, toIndex), pageable, ubs.size());
     return pages;
   }
 
