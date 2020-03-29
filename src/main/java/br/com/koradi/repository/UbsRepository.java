@@ -17,18 +17,17 @@ public interface UbsRepository extends PagingAndSortingRepository<Ubs, String> {
 
   Ubs findByName(String name);
 
-  static final String HAVERSINE_PART =
-      "(6371 * acos(cos(radians(:latitude)) * cos(radians(m.latitude)) * cos(radians(m.longitude) - radians(:longitude)) + sin(radians(:latitude)) * sin(radians(m.latitude))))";
+  static String HAVERSINE_PART =
+      "(6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(c.latitude)) * COS(RADIANS(c.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(c.latitude))))";
 
   @Query(
-      "SELECT m FROM Ubs m WHERE "
+      "SELECT c FROM Ubs c WHERE "
           + HAVERSINE_PART
           + " < :distance ORDER BY "
           + HAVERSINE_PART
           + " DESC")
-  public List<Ubs> findEntitiesByLocation(
-      @Param("latitude") final double latitude,
-      @Param("longitude") final double longitude,
-      @Param("distance") final double distance,
-      Pageable pageable);
+  public List<Ubs> findClientWithNearestLocation(
+      @Param("latitude") double latitude,
+      @Param("longitude") double longitude,
+      @Param("distance") double distance);
 }

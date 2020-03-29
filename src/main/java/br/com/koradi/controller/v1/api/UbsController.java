@@ -1,6 +1,5 @@
 package br.com.koradi.controller.v1.api;
 
-import br.com.koradi.controller.v1.request.UbsRequest;
 import br.com.koradi.dto.mapper.UbsMapper;
 import br.com.koradi.dto.model.UbsDto;
 import br.com.koradi.dto.response.Response;
@@ -14,8 +13,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * Customer controller
@@ -42,7 +39,7 @@ public class UbsController {
   @ApiOperation(value = "Finds all UBS", response = Response.class)
   @GetMapping
   public PagedResources<Resource<UbsDto>> findAll(
-      Pageable page, PagedResourcesAssembler<UbsDto> assembler) {
-    return assembler.toResource(ubsService.listAll(page));
+      Pageable page, PagedResourcesAssembler<UbsDto> assembler, @RequestParam String query) {
+    return assembler.toResource(ubsService.findAll(page, query));
   }
 }

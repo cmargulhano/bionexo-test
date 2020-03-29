@@ -32,8 +32,8 @@ public class Ubs implements Serializable {
   private String city;
   private String municipally;
   private String phone;
-  private String latitude;
-  private String longitude;
+  private Double latitude;
+  private Double longitude;
   private String size;
   private String adaptationforseniors;
   private String medicalequipment;

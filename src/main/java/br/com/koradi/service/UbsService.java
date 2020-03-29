@@ -35,10 +35,10 @@ public interface UbsService {
   public UbsDto update(UbsDto ubsDto);
 
   /**
-   * Lists UBS's
+   * Finds UBS
    *
    * @param pageable {@link Pageable}
    * @return {@link Page}
    */
-  public Page<UbsDto> listAll(Pageable pageable);
+  public Page<UbsDto> findAll(Pageable pageable, String query);
 }

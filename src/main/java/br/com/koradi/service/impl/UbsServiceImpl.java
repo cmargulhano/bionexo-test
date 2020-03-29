@@ -8,9 +8,12 @@ import br.com.koradi.service.UbsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static br.com.koradi.exception.EnterpriseException.throwException;
@@ -64,9 +67,19 @@ public class UbsServiceImpl implements UbsService {
   }
 
   @Override
-  public Page<UbsDto> listAll(Pageable pageable) {
-    Page<Ubs> customers = ubsRepository.findAll(pageable);
-    return customers.map(this::toCustomerDto);
+  public Page<UbsDto> findAll(Pageable pageable, String query) {
+    String[] latlon = query.split(",");
+    double lat = Double.parseDouble(latlon[0]);
+    double lon = Double.parseDouble(latlon[1]);
+    double distance = 10;
+    List<Ubs> ubs = ubsRepository.findClientWithNearestLocation(lat, lon, distance);
+    List<UbsDto> ubsDtos = new ArrayList<>();
+    ubs.forEach(
+        _ubs -> {
+          ubsDtos.add(toCustomerDto(_ubs));
+        });
+    Page<UbsDto> pages = new PageImpl<UbsDto>(ubsDtos, pageable, ubs.size());
+    return pages;
   }
 
   /**
