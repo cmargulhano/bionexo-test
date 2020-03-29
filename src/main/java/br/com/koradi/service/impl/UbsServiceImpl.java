@@ -72,7 +72,7 @@ public class UbsServiceImpl implements UbsService {
     double lat = Double.parseDouble(latlon[0]);
     double lon = Double.parseDouble(latlon[1]);
     double distance = 10;
-    List<Ubs> ubs = ubsRepository.findClientWithNearestLocation(lat, lon, distance);
+    List<Ubs> ubs = ubsRepository.findClientWithNearestLocation(lat, lon, distance, pageable);
     List<UbsDto> ubsDtos = new ArrayList<>();
     ubs.forEach(
         _ubs -> {
