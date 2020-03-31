@@ -1,4 +1,4 @@
-# VirtualStore
+# Bionexo UBS Test
 
 ## Para rodar o App:
 
