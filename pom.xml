@@ -108,7 +108,7 @@
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>1.9.1</version>
                 <configuration>
-                    <workingDirectory>../ubs-webapp</workingDirectory>
+                    <workingDirectory>frontend/ubs-webapp</workingDirectory>
                     <installDirectory>target</installDirectory>
                 </configuration>
                 <executions>
@@ -142,7 +142,7 @@
                         <configuration>
                             <target>
                                 <copy todir="${project.build.directory}/classes/public">
-                                    <fileset dir="../ubs-webapp/build"/>
+                                    <fileset dir="frontend/ubs-webapp/build"/>
                                 </copy>
                             </target>
                         </configuration>
