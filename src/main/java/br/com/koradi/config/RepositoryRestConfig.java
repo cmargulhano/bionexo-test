@@ -12,6 +12,11 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapt
 import java.util.Set;
 import java.util.regex.Pattern;
 
+/**
+ * Repository Rest Config
+ *
+ *  @author Cláudio Margulhano
+ */
 @Configuration
 public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
   Logger logger = LoggerFactory.getLogger(this.getClass());

@@ -8,12 +8,4 @@ services:
       dockerfile: build.dockerfile
     ports:
     - "8080:8080"
-    depends_on:
-      - rabbitmq
     network_mode: "host"
-
-  rabbitmq:
-    image: rabbitmq:management
-    ports:
-      - "5672:5672"
-      - "15672:15672"

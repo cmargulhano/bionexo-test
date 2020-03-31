@@ -1,9 +1,8 @@
 package br.com.koradi.config;
 
-import br.com.koradi.batch.JobCompletionListener;
+import br.com.koradi.batch.UbsJobCompletionListener;
 import br.com.koradi.batch.UbsItemProcessor;
 import br.com.koradi.dto.model.UbsDto;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
@@ -30,14 +29,21 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.sql.DataSource;
 
+/**
+ * Batch import configuration
+ *
+ * @author Cláudio Margulhano
+ */
 @Configuration
 @EnableBatchProcessing
 @EnableScheduling
-public class BatchConfiguration extends DefaultBatchConfigurer {
+public class UbsBatchConfiguration extends DefaultBatchConfigurer {
 
   @Autowired public JobBuilderFactory jobBuilderFactory;
 
   @Autowired public StepBuilderFactory stepBuilderFactory;
+
+  @Autowired public UbsJobCompletionListener ubsJobCompletionListener;
 
   @Bean
   public FlatFileItemReader<UbsDto> reader() {
@@ -133,10 +139,11 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
   }
 
   @Bean
-  public Job readCSVFileJob(JobCompletionListener listener, Step step1) {
+  public Job readCSVFileJob(UbsJobCompletionListener listener, Step step1) {
     return jobBuilderFactory
         .get("importUbsJob")
         .incrementer(new RunIdIncrementer())
+        .listener(ubsJobCompletionListener)
         .flow(step1)
         .end()
         .build();

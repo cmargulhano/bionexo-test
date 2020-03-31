@@ -1,27 +1,13 @@
 # VirtualStore
 
-## Para rodar o microservice há duas opções via Maven ou Docker:
+## Para rodar o App:
 
-
-### Maven
 
 ``` 
-docker-compose -f rabbitmq-compose.yml up -d
-
-mvn clean install 
-
-mvn spring-boot:run
-
-```
-
-### Docker
-
-```
 mvn clean install
 
-docker-compose build
-
 docker-compose -f docker-compose.yml up -d
+
 ```
 
 ## Executar testes

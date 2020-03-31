@@ -6,6 +6,7 @@ import br.com.koradi.dto.response.Response;
 import br.com.koradi.service.UbsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/v1/ubs")
-@Api(
-    value = "ubs-application",
-    description = "Operations pertaining to UBS application")
+@Api(value = "ubs-application", description = "Operations pertaining to UBS application")
 public class UbsController {
   @Autowired private UbsService ubsService;
   @Autowired private ModelMapper modelMapper;
@@ -39,7 +38,15 @@ public class UbsController {
   @ApiOperation(value = "Finds all UBS", response = Response.class)
   @GetMapping
   public PagedResources<Resource<UbsDto>> findAll(
-      Pageable page, PagedResourcesAssembler<UbsDto> assembler, @RequestParam String query) {
+      Pageable page,
+      PagedResourcesAssembler<UbsDto> assembler,
+      @ApiParam(
+              name = "query",
+              value =
+                  "Format latitude, longitude, distance(default is 10 Km) - Example: -23.2616148,-45.894472099999994,2",
+              defaultValue = "")
+          @RequestParam
+          String query) {
     return assembler.toResource(ubsService.findAll(page, query));
   }
 }

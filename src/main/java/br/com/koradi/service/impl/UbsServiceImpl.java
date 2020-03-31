@@ -31,6 +31,7 @@ import static java.util.Optional.ofNullable;
 @Component
 public class UbsServiceImpl implements UbsService {
 
+  public static final int DISTANCE_10_KM = 10;
   @Autowired private UbsRepository ubsRepository;
 
   @Autowired private ModelMapper modelMapper;
@@ -72,7 +73,7 @@ public class UbsServiceImpl implements UbsService {
     String[] queryParams = query.split(",");
     double lat = parseDouble(queryParams[0]);
     double lon = parseDouble(queryParams[1]);
-    double distance = 10;
+    double distance = DISTANCE_10_KM;
     if (queryParams.length == 3) {
       distance = parseDouble(queryParams[2]);
     }

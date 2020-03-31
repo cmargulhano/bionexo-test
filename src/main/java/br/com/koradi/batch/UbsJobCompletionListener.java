@@ -15,8 +15,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.springframework.batch.core.BatchStatus.COMPLETED;
+
+/**
+ * UBS Job Completion Listener
+ * @author Cláudio Margulhano
+ */
 @Component
-public class JobCompletionListener implements JobExecutionListener {
+public class UbsJobCompletionListener implements JobExecutionListener {
   Logger logger = LoggerFactory.getLogger(this.getClass());
   @Autowired public JdbcTemplate jdbcTemplate;
 
@@ -27,7 +33,7 @@ public class JobCompletionListener implements JobExecutionListener {
 
   @Override
   public void afterJob(JobExecution jobExecution) {
-    if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
+    if (jobExecution.getStatus() == COMPLETED) {
       List<UbsDto> result =
           jdbcTemplate.query(
               "SELECT id, name FROM ubs",
